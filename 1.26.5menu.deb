@@ -1,0 +1,9 @@
+<0x1017AEBB8 radar 200080d2 
+0x101795E8C no flash c0035fd6 
+0x1017ECC50 always crosshair 200080d2
+0x1017D66B4 no sniper blure c0035fd6
+0x1017AABE8 nametags ESP hook this and return 0 (spectrate) 
+0x101BD1244 target FOV hook this and return ur slider value
+0x101825344 tutorial bypass hook this and return true
+0x101825524 tutorial bypass hook this and return true
+0x101BD005C camera system object, hook this and get field 0x80 and set ur slider value
