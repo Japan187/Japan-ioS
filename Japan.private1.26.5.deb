@@ -1,0 +1,40 @@
+#import <substrate.h>
+#import <mach-o/dyld.h>
+#import <string>
+#import <Foundation/Foundation.h>
+#import "writeData.h"
+#import <UIKit/UIKit.h>
+ 
+using namespace std;
+ 
+uint64_t getRealOffset(uint64_t offset){
+    return _dyld_get_image_vmaddr_slide(0)+offset;
+}
+ 
+void (*CharacterData_update)(void * update, float time, void * weaponDefData);
+void _CharacterData_update(void * update, float time, void * weaponDefData) {
+ 
+if(update && weaponDefData) {
+   *(int *)((uint64_t)weaponDefData + 0x30) = 0; //buyprice 0x30
+   *(float *)((uint64_t)weaponDefData + 0x48) += 5.0f; //fireRate 0x48 (increase fireRate by 5.0)
+   *(float *)((uint64_t)weaponDefData + 0x64) = 0.0f; //reloadTime 0x64
+   *(float *)((uint64_t)weaponDefData + 0xc4) = 0.0f; //recoilPerShot 0xc4
+   void * inaccuracy = *(void **)((uint64_t)weaponDefData + 0x80); //object to WeaponFactors class 0x80
+ 
+   if(inaccuracy) {
+      //do something 
+   }
+}
+ 
+   CharacterData_update(update, time, weaponDefData);
+}
+ 
+ 
+%hook UnityAppController
+ 
+- (void)applicationDidBecomeActive:(id)arg0 {
+MSHookFunction(((void*)getRealOffset(0x1001BE9E4)),(void *)_CharacterData_update, (void**)&CharacterData_update);
+ 
+%orig;
+}%end
+ 
